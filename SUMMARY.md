@@ -18,7 +18,8 @@
   * [2.11.UNION](/docs/chain/union.md)
   * [2.12.DISTINCT](/docs/chain/distinct.md)
   * [2.13.LOCK](/docs/chain/lock.md)
-  * [2.14.COMMENT](/docs/chain/comment.md)
+  * [2.14.COMMENT](/docs/chain/comment.md)* 
+  * [2.15.JOIN](/docs/chain/join.md)
 * [3.CURD调用](/docs/curd/README.md)
   * [3.1.SELECT](/docs/curd/select.md)
   * [3.2.UPDATE](/docs/curd/update.md)

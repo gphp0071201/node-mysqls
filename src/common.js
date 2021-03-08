@@ -2,15 +2,25 @@ import {
     getOptToString,
     checkOptType,
     checkOptObjType,
-    expressionQuery
+    expressionQuery,
+    sortSelectSql
 } from './uitl.js'
 
 //需要查询的table表  参数：String  案例：table('user')
 export function table(opt){
-    if(opt&&opt.indexOf('SELECT')!=-1){
-        opt = `(${opt})`
+    if (typeof opt === 'string') {
+        if(opt&&opt.indexOf('SELECT')!=-1){
+            opt = `(${opt})`
+        }
+        if(opt) this.sqlObj.table = opt
+    } else {
+        const keys = Object.keys(opt)
+        let arr = []
+        for (const k of keys) {
+            arr.push(`${k} AS ${opt[k]}`)
+        }
+        this.sqlObj.table = arr.join(', ')
     }
-    if(opt) this.sqlObj.table = opt
     return this;
 } 
 
@@ -27,6 +37,34 @@ export function where(opt){
     }
     if(result) this.sqlObj.where = result
     return this;
+}
+
+
+/**
+ * join
+ * @param {object | Array<object>} opt
+ * opt.dir 连接方向 left | right | inner | full outer
+ * opt.table 要连接的表名称
+ * opt.where 连接条件
+ */
+export function join(opt) {
+    let result = ''
+    switch (Object.prototype.toString.call(opt)) {
+        case '[object Array]':
+            for (let i = 0, len = opt.length; i < len; i++) {
+                if (!opt[i].dir || !opt[i].table || !opt[i].where) continue
+                result += ` ${opt[i].dir.toUpperCase()} JOIN ${sortSelectSql(opt[i].table, true).result} ON ${getOptToString(opt[i].where)}`
+            }
+            break;
+        case '[object Object]':
+            if (!opt.dir || !opt.table || !opt.where) return
+            result += ` ${opt.dir.toUpperCase()} JOIN ${sortSelectSql(opt.table, true).result} ON ${getOptToString(opt.where)}`
+            break
+        default:
+            break;
+    }
+    if (result) this.sqlObj.join = result
+    return this
 }
 
 /*查询字段
@@ -224,16 +262,12 @@ export function avg(opt, alias){
     }
     return this
 }
-
+/**
+ * 
+ */
 export function sum(opt, alias){
     if(opt) {
         this.sqlObj.sum = `SUM(${opt})` + (alias ? ` AS ${alias}` : '')
     }
     return this
 }
-
-
-
-
-
-

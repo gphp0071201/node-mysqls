@@ -1,6 +1,6 @@
 ### [英文文档](/README.md) | [中文文档](/README-CN.md)
 
-# mysqls
+# node-mysqls
 It is written in JavaScript,crud for mysql.You can also use transactions very easily.
 
 node-mysqls 一款专为node.js生成sql语句的插件，链式调用，使用灵活。支持生成sql语法，也支持生成语法之后直接调用，支持事物等特性。
@@ -15,7 +15,7 @@ or
 yarn add node-mysqls 
 ```
 
-## mysqls参数说明
+## node-mysqls参数说明
 >  * init:          sql初始化API
 >  * exec:          执行sql语句
 >  * sql:           链式调用生成sql语句，支持生成后直接执行sql语句
