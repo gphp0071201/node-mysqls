@@ -9,171 +9,23 @@ require('babel-register')
 import mysql,{sql} from './src/main'
 
 const content = document.querySelector('#content')
-let result = '';
-console.log('join,,', sql.table('tab1').join([{
-	dir: 'left',
-	table: 'tab2',
-	where: {
-		id: 1,
-		name: 2
-	}
-}, {
-	dir: 'right',
-	table: 'tab3',
-	where: {
-		id: 1,
-		name: 2
-	}
-},{
-	dir: 'inner',
-	table: 'tab4',
-	where: {
-		id: 1,
-		name: 2
-	}
-}]).select())
-console.log('======insert object data=====', sql.table('user').data({
-	0: 0,
-	name: '张三',
-	date: ['NOW()'],
-}).insert())
-console.log('======insert array data=====', sql.table('user').data([{
-	id: 0,
-	name: '张三',
-	date: ['NOW()'],
-}, {
-	id: 2,
-	name: '张三',
-	date: 'NOW()',
-}]).insert())
-console.log('--------------------')
-console.log('======insert array data=====', sql.table('user').data([{
-	id: 1,
-	name: '张三',
-	date: ['NOW()']
-}, {id: 2, name: '李四', date: ["xxx"]}]).insert())
-console.log('--------------------')
-console.log('**', 'ffdsfsd', sql.table('user').where({
-	id: 1,
-	name: 2,
-	_type: 'or',
-	date: ['DATE_FORMAT("2017-11-15 21:45:00", "%W %M %D %Y")'],
-	dd:'fdsafd',
-	box: {
-		notBETWEEN: 'a,b'
-	}
-}).select())
 
-console.log('--------------------')
+// select语句
+const selectSql = sql.table('user').field(['id', 'name', 'age', 'sex', 'DATE_FORMAT(last_login_time, "%Y-%m-%d %H:%i:%s")', {
+	'create_time': 'createTime',
+	'DATE_FORMAT(last_login_time, "%Y-%m-%d %H:%i:%s")': 'lastLoginTime',
+}, 'status', 'remarks']).where({id: 1}).select()
 
-console.log('**', sql.table('user').where([{
-	id: 1,
-	name: 2,
-	_nexttype: 'and',
-	date: ['DATE_FORMAT("2017-11-15 21:45:00", "%W %M %D %Y")'],
-	dd:'fdsafd'
-}, {
-	id: 2,
-	name: 3,
-	date: ['DATE_FORMAT("2017-11-15 21:45:00", "%W %M %D %Y")'],
-	dd:'ssss'
-}]).select())
-// console.log(sql.table('user').data([{id: 1, name: 2}, {id: 2, name: 3}]).insert())
-// let sqlstr = sql.table('user')  
-//             .field('id,name,class')
-//             // .where({type:1,status:{ eq:100,egt:10},sex:2,_type:'and'})
-//             .where([
-//                 {type:1,status:{ eq:100,egt:10},_type:'or',_nexttype:'and'},
-//                 {sex:1,_nexttype:'or'},
-//                 {name:'zhangsan',sum:{elt:100,notin:'1,3,8'},_type:'or'}
-//             ])
-//             // .where({type:{ eq:100,notin:'1,8',_type:'and'}})
-//             .data('name=zane&email=752636052@qq.com')
-//             .order(['id','number asc'])
-//             // .limit(10,20)
-//             .page(2,10)
-//             .group('id,name')
-//             .having('count(number)>3')
-//             // .union('SELECT name FROM table1',true)
-//             // .union('SELECT name FROM table2',true)
-//             .union(['SELECT name FROM table1','SELECT name FROM table2'],true)
-//             .comment('查询个人数据')
-//             .select();
+// insert语句
+const insertSql = sql.table('user').data([
+	{user_no: 1, name: '张三', sex: 1, create_time: '2020-12-12 12:12:12'},
+	{user_no: 2, name: '李四', sex: 2, create_time: ['NOW()']}
+]).insert()
 
+// update语句
+const updateSql = sql.table('user').data({ id: 1, name: '张三', age: 25 }).where({id: 1, name: {like: '%hell%'}, sex: 1}).update()
 
+// delete语句
+const deletSql = sql.table('user').where({id: 1}).delet()
 
-// const result = sql
-// 	    .table('news')
-// 	    .where({name:'zane'})
-// 	    .page(3,5)
-// 	    .order('id desc')
-// 	    .select()
-
-// let sqlstr = sql.table('fea_company')
-//             .where({id:1,companyCode:'hy-ems'})
-//             .select();
-
-// let sqlstr = sql.table('fea_company')
-//             // .data('name=1&email=752636052@qq.com')
-//             .data({age:'age+20'})
-//             .update();
-// let sqlstr =  sql.table('web_system').data({ slowPageTime: true }).where({id:1,name:'zhangshan'}).update()
-
-
-// let sqlstr = sql.table('user')
-//             .where({id:{ eq:2,egt:10,_type:'or'}})
-//             .select();
-// let data={
-//         id:1
-//     }
-
-// let table = sql.field('id,name').table('node_table').group('field').select()
-
-
-// console.log(sql.table(table).group('field').where('id=1').order('status').select())
-
-// console.log(sql.table('node_table').where('id=1').select()) 
-
-// console.log(sql.table(`(${sql.table('user').where('id=2').select()})`).where('name=`zhangsan`').select()) 
-
-let data1 = {
-		name: 'zane',
-		email: '752636052@qq.com'
-	}
-// let insertSql1 = sql.table('email').data(data1).insert();
-
-let data = [
-	{ name: 'zane', email: '752636052@qq.com' },
-	{ name: 'zane_1', email: '752636052_1@qq.com' },
-	{ name: 'zane_2', email: '752636052_2@qq.com' },
-]
-// let insertSql = sql.table('email').data(data).insert();
-// console.log(insertSql)
-
-// content.innerHTML = `${insertSql1} <br/> ${insertSql}`;
-
-// console.group('普通查询语句')
-// console.log(sql.table('atables').field('id, name, hello_boy').select())
-// console.groupEnd()
-
-// console.group('数组类型')
-// console.log('Array<string>', sql.table('atables').field(['a.id', 'name', 'hello_boy', 'remarks']).select())
-// console.log('Array<string|object>', sql.table('atables a, btables b').field(['id', 'name', { 'a.hello_boy': 'helloBoy', 'b.user_id': 'userId' }, 'remarks']).select())
-// console.groupEnd()
-
-// let updateSql = sql
-//             .table('user')
-//             .data(data)
-//             .update()
-// console.log(updateSql)
-
-// let sqlstring = sql.table('node_table').group('user_id').where('id=1').having('count(number)>3').select()
-
-// console.log(sqlstring)
-
-// let delSql = sql.table('user').where('name=`zane`').delet();
-// console.log(delSql)
-
-
-
-
+content.innerHTML = `${selectSql} <br/> ${insertSql} <br/> ${updateSql} <br/> ${deletSql}`;

@@ -103,8 +103,8 @@ SELECT * FROM node_table WHERE (id=1 OR name=`zhangsan`) OR (sex=1 AND number=3)
 | LT            | 小于（<）        |
 | ELT           | 小于等于（<=）    |
 | LIKE          | 模糊查询         |
-| [NOT] BETWEEN | 不在）区间查询    |
-| [NOT] IN      | （不在）IN 查询   |
+| [NOT] BETWEEN | (不在）区间查询    |
+| [NOT] IN      | (不在）IN 查询   |
 
 例如：
 ```js

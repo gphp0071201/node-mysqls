@@ -38,13 +38,9 @@ export function update(type = false, bol = false){
     let keys        = Object.keys(newopt)
 
     keys.forEach((item,index)=>{
-        datastr =  index==keys.length-1?
-                  `${datastr}${item}=${checkOptType(newopt[item], item, type, bol)}`:
-                  `${datastr}${item}=${checkOptType(newopt[item], item, type, bol)},`
+        datastr =  `${datastr}${item}=${checkOptType(newopt[item], item, type, bol)}` + (index==keys.length-1 ? '' : ' , ')
     })
-    result  = this.sqlObj.where ? 
-           `UPDATE ${this.sqlObj.table} SET ${datastr} WHERE ${this.sqlObj.where}` :
-           `UPDATE ${this.sqlObj.table} SET ${datastr}`
+    result  = `UPDATE ${this.sqlObj.table} SET ${datastr}` +  (this.sqlObj.where ? ` WHERE ${this.sqlObj.where}` : '')
     const sqlStr = result.replace(/'/g, '\'').replace(/`/g, '\'');
     if (type && !bol) {
         this.sqlObj.sqlStr = sqlStr; return this;
@@ -66,9 +62,7 @@ export function insert(type = false){
 }
 
 export function delet(type = false){
-    let result = this.sqlObj.where ?
-           `DELETE FROM ${this.sqlObj.table} WHERE ${this.sqlObj.where}`:
-           `DELETE FROM ${this.sqlObj.table}`
+    let result = `DELETE FROM ${this.sqlObj.table}` + (this.sqlObj.where ? ` WHERE ${this.sqlObj.where}` : '')
     const sqlStr = result.replace(/'/g, '\'').replace(/`/g, '\'')
     if (type) {
         this.sqlObj.sqlStr = sqlStr; return this;

@@ -7,6 +7,7 @@ join参数为`Array<object>` 或 `object` 类型, 例如：
 
 ```
 dir: 连接方向 left | right | inner | outer | left outer | right outer | full outer
+
 ```
 
 Array类型参数 
