@@ -1,6 +1,5 @@
 import sqlstring from 'sqlstring'
 
-
 //把查询参数转换为string
 export function getOptToString(opt){
     let result  = ''
@@ -12,7 +11,10 @@ export function getOptToString(opt){
 
         let keys = Object.keys(opt)
         keys.forEach((item,index)=>{
-            if(item === '_type') return;
+            if(item === '_type') {
+                number = 0;
+                return;
+            };
             if(typeof(opt[item])==='object'){
                 if(index === keys.length-1-number){
                     result = result +  `${checkOptObjType(item,opt[item])}`
@@ -105,7 +107,7 @@ export function checkOptObjType(pre_key,val){
                                 item,
                                 val[item],
                                 _type.toUpperCase(),
-                                index === keys.length-1-number?true:false
+                                index === keys.length-1-number
                               )
         })
     }else{
@@ -235,7 +237,7 @@ export function handleInsertData(data) {
         for(let i = 0; i < data.length; i++) {
             let items = ''
             for (let key in data[i]) {
-                items = items ? `${items},${checkOptType(data[i][key])}` : checkOptType(data[i][key])
+                items = `${items}` ? `${items},${checkOptType(data[i][key])}` : checkOptType(data[i][key])
             }
             values += `(${items}),`
         }
@@ -244,7 +246,7 @@ export function handleInsertData(data) {
         // object
         for (let key in data) {
             keys = keys ? `${keys},${key}` : key
-            values = values ? `${values},${checkOptType(data[key])}` : checkOptType(data[key])
+            values = `${values}` ? `${values},${checkOptType(data[key])}` : checkOptType(data[key])
         }
         values = `(${values})`;
     }

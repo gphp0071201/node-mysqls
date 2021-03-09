@@ -16,7 +16,6 @@ export function select(type=false){
         this.sqlObj = {}
         return result
     }
-
     let newSqlObj = sortSelectSql(this.sqlObj)
     newSqlObj.sortkeys.forEach(item=>{
         if(newSqlObj.result[item]){

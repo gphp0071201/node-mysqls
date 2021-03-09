@@ -43,7 +43,7 @@ export function where(opt){
 /**
  * join
  * @param {object | Array<object>} opt
- * opt.dir 连接方向 left | right | inner | full outer
+ * opt.dir 连接方向 left | right | inner | outer | left outer | right outer | full outer | cross
  * opt.table 要连接的表名称
  * opt.where 连接条件
  */
@@ -53,12 +53,12 @@ export function join(opt) {
         case '[object Array]':
             for (let i = 0, len = opt.length; i < len; i++) {
                 if (!opt[i].dir || !opt[i].table || !opt[i].where) continue
-                result += ` ${opt[i].dir.toUpperCase()} JOIN ${sortSelectSql(opt[i].table, true).result} ON ${getOptToString(opt[i].where)}`
+                result += ` ${opt[i].dir.toUpperCase()} JOIN ${sortSelectSql(opt[i].table, true).result} ON (${getOptToString(opt[i].where)})`
             }
             break;
         case '[object Object]':
             if (!opt.dir || !opt.table || !opt.where) return
-            result += ` ${opt.dir.toUpperCase()} JOIN ${sortSelectSql(opt.table, true).result} ON ${getOptToString(opt.where)}`
+            result += ` ${opt.dir.toUpperCase()} JOIN ${sortSelectSql(opt.table, true).result} ON (${getOptToString(opt.where)})`
             break
         default:
             break;
@@ -128,7 +128,7 @@ export function data(opt){
 export function order(opt){
     let orderby = 'ORDER BY'
 
-    if(typeof(opt) === 'object'){
+    if(typeof(opt) === 'object') {
         opt = opt.join(',')
     }
 
@@ -236,12 +236,22 @@ export function comment(opt){
     return this
 }
 
+/**
+ * 总数
+ * @param {string} opt 字段名
+ * @param {string} alias 字段别名
+ */
 export function count(opt, alias){
     let optvalue = opt || 1
     this.sqlObj.count = `COUNT(${optvalue})` + (alias ? ` AS ${alias}` : '')
     return this
 }
 
+/**
+ * 最大值
+ * @param {string} opt 字段名
+ * @param {string} alias 字段别名
+ */
 export function max(opt, alias){
     if(opt) {
         this.sqlObj.max = `MAX(${opt})` + (alias ? ` AS ${alias}` : '')
@@ -249,6 +259,11 @@ export function max(opt, alias){
     return this
 }
 
+/**
+ * 最小值
+ * @param {string} opt 字段名
+ * @param {string} alias 字段别名
+ */
 export function min(opt, alias){
     if(opt) {
         this.sqlObj.min = `MIN(${opt})` + (alias ? ` AS ${alias}` : '')
@@ -256,6 +271,11 @@ export function min(opt, alias){
     return this
 }
 
+/**
+ * 求平均数
+ * @param {string} opt 字段名
+ * @param {string} alias 字段别名
+ */
 export function avg(opt, alias){
     if(opt) {
         this.sqlObj.avg = `AVG(${opt})` + (alias ? ` AS ${alias}` : '')
@@ -263,7 +283,9 @@ export function avg(opt, alias){
     return this
 }
 /**
- * 
+ * 求和
+ * @param {string} opt 字段名
+ * @param {string} alias 字段别名
  */
 export function sum(opt, alias){
     if(opt) {

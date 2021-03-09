@@ -5,6 +5,9 @@ join方法属于链式调用方法之一, 主要用于联表查询
 
 join参数为`Array<object>` 或 `object` 类型, 例如：
 
+```
+dir: 连接方向 left | right | inner | outer | left outer | right outer | full outer
+```
 
 Array类型参数 
 ```js 

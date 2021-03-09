@@ -10,12 +10,75 @@ import mysql,{sql} from './src/main'
 
 const content = document.querySelector('#content')
 let result = '';
-
-console.log('===========', sql.table('user').data({
+console.log('join,,', sql.table('tab1').join([{
+	dir: 'left',
+	table: 'tab2',
+	where: {
+		id: 1,
+		name: 2
+	}
+}, {
+	dir: 'right',
+	table: 'tab3',
+	where: {
+		id: 1,
+		name: 2
+	}
+},{
+	dir: 'inner',
+	table: 'tab4',
+	where: {
+		id: 1,
+		name: 2
+	}
+}]).select())
+console.log('======insert object data=====', sql.table('user').data({
+	0: 0,
+	name: '张三',
+	date: ['NOW()'],
+}).insert())
+console.log('======insert array data=====', sql.table('user').data([{
+	id: 0,
+	name: '张三',
+	date: ['NOW()'],
+}, {
+	id: 2,
+	name: '张三',
+	date: 'NOW()',
+}]).insert())
+console.log('--------------------')
+console.log('======insert array data=====', sql.table('user').data([{
 	id: 1,
 	name: '张三',
 	date: ['NOW()']
-}).insert())
+}, {id: 2, name: '李四', date: ["xxx"]}]).insert())
+console.log('--------------------')
+console.log('**', 'ffdsfsd', sql.table('user').where({
+	id: 1,
+	name: 2,
+	_type: 'or',
+	date: ['DATE_FORMAT("2017-11-15 21:45:00", "%W %M %D %Y")'],
+	dd:'fdsafd',
+	box: {
+		notBETWEEN: 'a,b'
+	}
+}).select())
+
+console.log('--------------------')
+
+console.log('**', sql.table('user').where([{
+	id: 1,
+	name: 2,
+	_nexttype: 'and',
+	date: ['DATE_FORMAT("2017-11-15 21:45:00", "%W %M %D %Y")'],
+	dd:'fdsafd'
+}, {
+	id: 2,
+	name: 3,
+	date: ['DATE_FORMAT("2017-11-15 21:45:00", "%W %M %D %Y")'],
+	dd:'ssss'
+}]).select())
+// console.log(sql.table('user').data([{id: 1, name: 2}, {id: 2, name: 3}]).insert())
 // let sqlstr = sql.table('user')  
 //             .field('id,name,class')
 //             // .where({type:1,status:{ eq:100,egt:10},sex:2,_type:'and'})
