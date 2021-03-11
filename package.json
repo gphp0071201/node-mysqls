@@ -3,10 +3,16 @@
   "version": "0.1.1",
   "description": "快速生成mysql语句",
   "main": "./build/main.js",
-  "keywords": ["node", "mysql", "node-mysqls"],
+  "keywords": [
+    "node",
+    "mysql",
+    "node-mysqls"
+  ],
   "scripts": {
     "dev": "parcel ./index.html",
-    "build": "gulp"
+    "build": "gulp",
+    "dev:webpack": "",
+    "build:webpack": "webpack --config ./webpack.config.js"
   },
   "homepage": "https://github.com/gphp0071201/node-mysqls",
   "bugs": {
