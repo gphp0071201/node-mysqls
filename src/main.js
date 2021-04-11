@@ -36,11 +36,13 @@ for (let key in sqljson) {
  *connectionLimit  连接池数
  *queueLimit 排队限制 
  */
-function init(config = {}) {
+function init(config = {}, isDef = true) {
     const mysql2 = require('mysql2');
+    let conn = null
     ispool = typeof(config.ispool) === 'boolean' ? config.ispool : true;
+
     if (ispool) {
-        connection = mysql2.createPool({
+        conn = mysql2.createPool({
             host: config.host || '127.0.0.1',
             user: config.user || 'root',
             password: config.password || 'root',
@@ -51,13 +53,25 @@ function init(config = {}) {
             queueLimit: config.queueLimit || 0,
         });
     } else {
-        connection = mysql.createConnection({
+        conn = mysql.createConnection({
             host: config.host || '127.0.0.1',
             user: config.user || 'root',
             password: config.password || 'root',
             database: config.database || 'test',
             port: config.port || 3306,
         });
+    }
+    
+    if (isDef) {
+        connection = conn
+    }
+    return conn
+}
+function switchLink (conn) {
+    if (!conn) {
+        throw new Error('Please initialize mysql first.')
+    } else {
+        connection = conn
     }
 }
 
@@ -81,6 +95,7 @@ async function exec(sqlstring, type = false) {
         });
     })
 }
+
 mysql.prototype.exec = exec;
 
 async function transaction(sqlstringArr = []) {
@@ -119,8 +134,9 @@ async function transaction(sqlstringArr = []) {
 }
 
 module.exports = {
-    init: init,
     exec: exec,
+    init: init,
+    switchLink: switchLink,
     transaction: transaction,
     sql: new mysql()
 }

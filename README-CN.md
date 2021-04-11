@@ -17,6 +17,7 @@ yarn add node-mysqls
 
 ## node-mysqls参数说明
 >  * init:          sql初始化API
+>  * switchLink:      连接初始化或切换数据库
 >  * exec:          执行sql语句
 >  * sql:           链式调用生成sql语句，支持生成后直接执行sql语句
 >  * transaction:   执行事务API
@@ -40,18 +41,48 @@ init({
     database: 'test',
     port: 3306,
 })
-```
 
-### init 参数说明
+// or
+const db1 = init({
+    host: 'localhost',
+    user: 'root',
+    password:'123456',
+    database: 'test',
+    port: 3306,
+}, false)
+switchLink(db1)
+```
+## 切换数据库
+```js
+const db1 = init({
+    host: 'localhost',
+    user: 'root',
+    password:'123456',
+    database: 'test',
+    port: 3306,
+}, false)
+
+const db2 = init({
+    host: 'localhost',
+    user: 'root',
+    password:'123456',
+    database: 'test2',
+    port: 3306,
+}, false)
+switchLink(db2)
+```
+### init config 参数说明
 > * ispool:           是否以连接池的方式初始化 (default:true)
 > * host:             host地址  (default:'127.0.0.1')
 > * user:             用户名 (default:'root')
 > * password:         数据库密码  (default:'root')
 > * database:         使用的数据库  (default:'test')
 > * port:             端口  (default:'3306')
-> * waitConnection:   是否等待链接(连接池时使用)  (default:true)   
+> * waitConnection:   是否等待链接(连接池时使用)  (default:true)
 > * connectionLimit:  连接池大小   (default:10)   
-> * queueLimit:       排队限制   (default:0)   
+> * queueLimit:       排队限制   (default:0)
+### init bool 参数说明
+> * isDef:             是否默认数据库 (default: true)
 
 ### 只生成sql语句案例
 ```js

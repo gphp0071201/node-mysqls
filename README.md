@@ -16,6 +16,7 @@ yarn add node-mysqls
 
 ## node-mysqls parameters
 >  * init:          sql Initialization
+>  * initConn:      Connection initialization or switching database
 >  * exec:          Executing SQL statements
 >  * sql:           Chain Call Generates SQL Statement
 >  * transaction:   transaction API
@@ -23,10 +24,10 @@ yarn add node-mysqls
 ## Use：
 ```js 
 //import
-import { init, exec, sql, transaction } from 'node-mysqls'
+import { init, exec, sql, initConn, transaction } from 'node-mysqls'
 
 //require
-let { init, exec, sql, transaction } = require('node-mysqls')
+let { init, exec, sql, initConn, transaction } = require('node-mysqls')
 ```
 
 ## Config initialization：
@@ -39,6 +40,37 @@ init({
     database: 'test',
     port: 3306,
 })
+
+// or
+const db1 = init({
+    host: 'localhost',
+    user: 'root',
+    password:'123456',
+    database: 'test',
+    port: 3306,
+}, false)
+
+switchLink(db1)
+```
+
+## Switch database link
+
+```js
+const db1 = init({
+    host: 'localhost',
+    user: 'root',
+    password:'123456',
+    database: 'test',
+    port: 3306,
+}, false)
+const db2 = init({
+    host: 'localhost',
+    user: 'root',
+    password:'123456',
+    database: 'test2',
+    port: 3306,
+}, false)
+switchLink(db2)
 ```
 
 ### init configs
@@ -51,7 +83,8 @@ init({
 > * waitConnection:   wait for connections.  (default:true)   
 > * connectionLimit:  connection limit.   (default:10)   
 > * queueLimit:       queue limit.   (default:0)   
-
+### init bool
+> * isDef:             Is default database. (default: true)
 ### Only Generate SQL statements.
 ```js
 sql

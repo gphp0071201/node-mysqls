@@ -2,7 +2,7 @@ import {
     sortSelectSql,
     checkOptType,
     handleInsertData,
-} from './uitl'
+} from './util'
 
 export function select(type=false){
     let result = ''
